@@ -177,6 +177,16 @@ Now we can build Zimbra:
 docker run --rm -v zbs:/home/git/zimbra/BUILDS -v /root/.ssh:/root/.ssh zbs
 ```
 
+If running Docker on Apple silicon, you may need to build and run specifying `--platform=linux/amd64`.  This will avoid the error: 
+```
+FAILURE MSG : Could not determine BUILD_ARCH
+```
+For example, on Apple silicon:
+```
+docker build --platform=linux/amd64 -t zbs .
+docker run --platform=linux/amd64 --rm -v zbs:/home/git/zimbra/BUILDS -v /root/.ssh:/root/.ssh zbs
+```
+
 There are two bind mounts: one for the build output and one for the `~/.ssh` directory containing the key to access GitHub repos.  Since you are most likely using docker/podman as root, the path above should be fine.  Adapt where necessary.  For docker, using the above command will create the volume ```/var/lib/docker/volumes/zbs``` and the builds can be found here later.
 
 Once the volume and build image is no longer needed, they can be removed:
